@@ -2,6 +2,7 @@ com/shadow/homework19/Main.java
  com.shadow.homework19.Main
 com/shadow/homework18/Factorial.java
  com.shadow.homework18.Factorial
- com.shadow.homework18.Factorial$1
 com/shadow/homework18/Main.java
  com.shadow.homework18.Main
+com/shadow/homework18/Fibanachi.java
+ com.shadow.homework18.Fibanachi
