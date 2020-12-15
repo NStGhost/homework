@@ -8,9 +8,20 @@ public class Main {
     }
 
     private void run() {
-        firstEx();
-        secondEx();
+        //firstEx();
+        //secondEx();
+        thirdEx();
 
+    }
+
+    private void thirdEx() {
+        StopWatch stopWatch = new StopWatch();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stopWatch.setCancel();
     }
 
     private void secondEx() {
