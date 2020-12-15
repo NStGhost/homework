@@ -8,10 +8,21 @@ public class Main {
     }
 
     private void run() {
-        //firstEx();
-        //secondEx();
+        firstEx();
+        secondEx();
         thirdEx();
+        fourthEx();
 
+    }
+
+    private void fourthEx() {
+        CopyFiles copyFiles = new CopyFiles();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        copyFiles.setCancel();
     }
 
     private void thirdEx() {
