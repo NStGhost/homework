@@ -8,6 +8,18 @@ public class Main {
     }
 
     private void run() {
+        firstEx();
 
+    }
+
+    private void firstEx() {
+        Factorial factorial = new Factorial(10);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        long res1 = factorial.cancel();
+        System.out.println("Result factorial - " + res1);
     }
 }
