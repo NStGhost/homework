@@ -13,6 +13,11 @@ public class WorkerVolatile implements Runnable{
 
     @Override
     public void run() {
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         count++;
     }
 

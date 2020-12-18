@@ -14,6 +14,11 @@ public class WorkerAtomic implements Runnable{
 
     @Override
     public void run() {
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         c.getAndIncrement();
     }
 
