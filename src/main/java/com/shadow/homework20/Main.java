@@ -1,8 +1,6 @@
 package com.shadow.homework20;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 
 public class Main {
@@ -21,7 +19,46 @@ public class Main {
         //Second();
         //Third();
         //ThirdA();
-        Fourth();
+        //Fourth();
+        Fifth();
+    }
+
+    private void Fifth() {
+
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(10);
+        Runnable runnable = () -> {
+            CountDownLatch countDownLatch = new CountDownLatch(1);
+            Thread thread1 = new Thread(() -> {
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Hello ");
+            });
+
+            Thread thread2 = new Thread(() -> {
+                try {
+                    countDownLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("World! ");
+            });
+            thread1.start();
+            thread2.start();
+            countDownLatch.countDown();
+
+        };
+        ScheduledFuture<?> future = executorService.scheduleAtFixedRate(runnable, 5,5, TimeUnit.SECONDS);
+        executorService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                future.cancel(true);
+                executorService.shutdown();
+            }
+        }, 30, TimeUnit.SECONDS);
+
     }
 
     private void Fourth() {
