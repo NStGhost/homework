@@ -35,21 +35,22 @@ public class Main {
         }
         executorService.shutdown();
         //Synchro
-        Point point1 = new Point();
+        PointLock pointLock = new PointLock();
         executorService = Executors.newFixedThreadPool(2000);
         future = null;
         for (int i=0; i<2000; i++){
             future = executorService.submit(new Callable<Boolean>() {
                 @Override
                 public Boolean call() {
-                    point1.moveS(1,1);
+                    pointLock.moveS(1,1);
                     return null;
                 }
             });
         }
+
         try {
             future.get();
-            point1.showCoordinates();
+            pointLock.showCoordinates();
         } catch (Exception e) {
             e.printStackTrace();
         }
