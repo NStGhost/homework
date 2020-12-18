@@ -4,13 +4,42 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
 public class Main {
 
     public static void main(String[] args) {
         //First();
         //FirstA();
         //FirstB();
-        Second();
+        //Second();
+        Third();
+        System.out.println();
+        ThirdA();
+        
+    }
+
+    private static void ThirdA() {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(() -> {
+            for (int i=0; i < 200; i++) {
+                TempClass2.getInstance(countDownLatch);
+            }
+        });
+        countDownLatch.countDown();
+        executorService.shutdown();
+    }
+
+    private static void Third() {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(() -> {
+            for (int i=0; i < 200; i++) {
+                TempClass.getInstance(countDownLatch);
+            }
+        });
+        countDownLatch.countDown();
+        executorService.shutdown();
     }
 
     private static void Second() {
