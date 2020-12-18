@@ -11,9 +11,9 @@ public class Main {
     }
 
     private void run() {
-        //First();
-        //Second();
-        //Third();
+        First();
+        Second();
+        Third();
         Fourth();
     }
 
@@ -48,8 +48,6 @@ public class Main {
         thread.interrupt();
     }
 
-
-
     private void First() {
         //No Synchro
         Point point = new Point();
@@ -57,12 +55,9 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(2000);
         Future<Boolean> future = null;
         for (int i=0; i<2000; i++){
-            future = executorService.submit(new Callable<Boolean>() {
-                @Override
-                public Boolean call() {
-                    point.move(1,1);
-                    return null;
-                }
+            future = executorService.submit(() -> {
+                point.move(1,1);
+                return null;
             });
         }
         try {
@@ -72,17 +67,15 @@ public class Main {
             e.printStackTrace();
         }
         executorService.shutdown();
+
         //Synchro
         PointLock pointLock = new PointLock();
         executorService = Executors.newFixedThreadPool(2000);
         future = null;
         for (int i=0; i<2000; i++){
-            future = executorService.submit(new Callable<Boolean>() {
-                @Override
-                public Boolean call() {
-                    pointLock.moveS(1,1);
-                    return null;
-                }
+            future = executorService.submit(() -> {
+                pointLock.moveS(1,1);
+                return null;
             });
         }
 
