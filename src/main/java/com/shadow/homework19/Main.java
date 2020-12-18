@@ -1,5 +1,7 @@
 package com.shadow.homework19;
 
+import java.util.concurrent.*;
+
 public class Main {
     public static void main(String[] args) {
         Main main = new Main();
@@ -7,6 +9,50 @@ public class Main {
     }
 
     private void run() {
-        
+        First();
+    }
+
+    private void First() {
+        //No Synchro
+        Point point = new Point();
+        point.showCoordinates();
+        ExecutorService executorService = Executors.newFixedThreadPool(2000);
+        Future<Boolean> future = null;
+        for (int i=0; i<2000; i++){
+            future = executorService.submit(new Callable<Boolean>() {
+                @Override
+                public Boolean call() {
+                    point.move(1,1);
+                    return null;
+                }
+            });
+        }
+        try {
+            future.get();
+            point.showCoordinates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+        //Synchro
+        Point point1 = new Point();
+        executorService = Executors.newFixedThreadPool(2000);
+        future = null;
+        for (int i=0; i<2000; i++){
+            future = executorService.submit(new Callable<Boolean>() {
+                @Override
+                public Boolean call() {
+                    point1.moveS(1,1);
+                    return null;
+                }
+            });
+        }
+        try {
+            future.get();
+            point1.showCoordinates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
     }
 }
