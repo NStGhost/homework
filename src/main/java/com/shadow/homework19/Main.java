@@ -1,5 +1,7 @@
 package com.shadow.homework19;
 
+import com.shadow.homework18.Fibanachi;
+
 import java.util.concurrent.*;
 
 public class Main {
@@ -9,8 +11,44 @@ public class Main {
     }
 
     private void run() {
-        First();
+        //First();
+        //Second();
+        //Third();
+        Fourth();
     }
+
+    private void Second() {
+        FibanachiThread fibanachi = new FibanachiThread(20);
+        fibanachi.start();
+    }
+
+    private void Third() {
+        FibanachiRunnable fibanachiRunnable = new FibanachiRunnable(20);
+        new Thread(fibanachiRunnable).start();
+    }
+
+    private void Fourth() {
+        FibanachiThread fibanachi = new FibanachiThread(20);
+        fibanachi.start();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        fibanachi.interrupt();
+
+        FibanachiRunnable fibanachiRunnable = new FibanachiRunnable(20);
+        Thread thread = new Thread(fibanachiRunnable);
+        thread.start();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        thread.interrupt();
+    }
+
+
 
     private void First() {
         //No Synchro

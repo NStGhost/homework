@@ -16,18 +16,17 @@ public class Fibanachi {
     public Fibanachi() {
         executorService = Executors.newFixedThreadPool(4);
         future = executorService.submit(() -> {
-            System.out.println("Start factorial");
+            System.out.println("Start fibanachi");
             long temp1 = 0;
             long temp2 = 1;
-            long result = 0;
+            result = 0;
             while (!setCancel) {
                 result = temp1 + temp2;
                 temp1 = temp2;
                 temp2 = result;
-                System.out.println(String.format("Current value factorail - %d", result));
                 Thread.sleep(250);
             }
-            System.out.println("Stop factorial");
+            System.out.println("Stop fibanachi");
             return result;
         });
 
