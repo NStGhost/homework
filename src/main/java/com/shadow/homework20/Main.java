@@ -6,19 +6,33 @@ import java.util.concurrent.Executors;
 
 
 public class Main {
+    private static final Object lock1 = new Object();
+    private static final Object lock2 = new Object();
 
     public static void main(String[] args) {
+        Main main = new Main();
+        main.run();
+    }
+
+    private void run() {
         //First();
         //FirstA();
         //FirstB();
         //Second();
-        Third();
-        System.out.println();
-        ThirdA();
-        
+        //Third();
+        //ThirdA();
+        Fourth();
     }
 
-    private static void ThirdA() {
+    private void Fourth() {
+        Dead1 dead1 = new Dead1();
+        Dead2 dead2 = new Dead2();
+        dead1.start();
+        dead2.start();
+
+    }
+
+    private void ThirdA() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.submit(() -> {
@@ -30,7 +44,7 @@ public class Main {
         executorService.shutdown();
     }
 
-    private static void Third() {
+    private void Third() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.submit(() -> {
@@ -42,7 +56,7 @@ public class Main {
         executorService.shutdown();
     }
 
-    private static void Second() {
+    private void Second() {
         CountDownLatch countDownLatch = new CountDownLatch(2000);
         ExecutorService executorService = Executors.newFixedThreadPool(2000);
         WaitEnd waitEnd = new WaitEnd(countDownLatch);
@@ -59,7 +73,7 @@ public class Main {
         executorService.shutdown();
     }
 
-    private static void FirstB() {
+    private void FirstB() {
         int countOperation = 2000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
@@ -76,7 +90,7 @@ public class Main {
         executorService.shutdown();
     }
 
-    private static void FirstA() {
+    private void FirstA() {
         int countOperation = 2000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
@@ -93,7 +107,7 @@ public class Main {
         executorService.shutdown();
     }
 
-    private static void First() {
+    private void First() {
         int countOperation = 2000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
@@ -110,4 +124,35 @@ public class Main {
         executorService.shutdown();
     }
 
+
+    public class Dead1 extends Thread{
+        @Override
+        public void run() {
+            synchronized (Main.lock1) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (Main.lock2) {
+                    System.out.println("OLOLOLO - 1");
+                }
+            }
+        }
+    }
+
+    public class Dead2 extends Thread{
+        public void run() {
+            synchronized (Main.lock2) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (Main.lock1) {
+                    System.out.println("OLOLOLO - 2");
+                }
+            }
+        }
+    }
 }
