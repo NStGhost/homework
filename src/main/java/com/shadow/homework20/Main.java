@@ -13,14 +13,14 @@ public class Main {
     }
 
     private void run() {
-        //First();
-        //FirstA();
-        //FirstB();
+        First();
+        FirstA();
+        FirstB();
         //Second();
         //Third();
         //ThirdA();
         //Fourth();
-        Fifth();
+        //Fifth();
     }
 
     private void Fifth() {
@@ -111,7 +111,7 @@ public class Main {
     }
 
     private void FirstB() {
-        int countOperation = 2000;
+        int countOperation = 5000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
         final WorkerAtomic workerAtomaric = new WorkerAtomic(start);
@@ -128,7 +128,7 @@ public class Main {
     }
 
     private void FirstA() {
-        int countOperation = 2000;
+        int countOperation = 5000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
         final WorkerVolatile workerVolatile = new WorkerVolatile(start);
@@ -145,7 +145,7 @@ public class Main {
     }
 
     private void First() {
-        int countOperation = 2000;
+        int countOperation = 5000;
         ExecutorService executorService = Executors.newFixedThreadPool(countOperation);
         CountDownLatch start = new CountDownLatch(1);
         final Worker worker = new Worker(start);

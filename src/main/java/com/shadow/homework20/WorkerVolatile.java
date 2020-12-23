@@ -4,7 +4,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class WorkerVolatile implements Runnable{
     private final CountDownLatch countDownLatch;
-    private int count;
+    private volatile int count;
 
     public WorkerVolatile(CountDownLatch countDownLatch) {
         this.countDownLatch = countDownLatch;
