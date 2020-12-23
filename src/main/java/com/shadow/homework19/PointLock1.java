@@ -1,20 +1,25 @@
 package com.shadow.homework19;
 
-public class PointLock {
+public class PointLock1 {
+
+    private final Object lock = new Object();
     private int x;
     private int y;
 
-    public PointLock() {
+    public PointLock1() {
         x = 0;
         y = 0;
     }
 
-    public synchronized void moveS(int dx, int dy) {
+    public void moveS(int dx, int dy) {
+        synchronized (lock) {
             x += dx;
             y += dy;
+        }
     }
 
     public void showCoordinates() {
         System.out.println(String.format("X - %d, Y - %d",x,y));
     }
+
 }

@@ -11,9 +11,9 @@ public class Main {
     }
 
     private void run() {
-        First();
-        Second();
-        Third();
+        //First();
+        //Second();
+        //Third();
         Fourth();
     }
 
@@ -30,20 +30,33 @@ public class Main {
     private void Fourth() {
         FibanachiThread fibanachi = new FibanachiThread(20);
         fibanachi.start();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+            if (!fibanachi.isAlive()) {
+                break;
+            }
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
         fibanachi.interrupt();
 
         FibanachiRunnable fibanachiRunnable = new FibanachiRunnable(20);
         Thread thread = new Thread(fibanachiRunnable);
         thread.start();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        while (true) {
+            if (fibanachiRunnable.getStatus()) {
+                break;
+            }
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
         thread.interrupt();
     }
@@ -51,7 +64,6 @@ public class Main {
     private void First() {
         //No Synchro
         Point point = new Point();
-        point.showCoordinates();
         ExecutorService executorService = Executors.newFixedThreadPool(2000);
         Future<Boolean> future = null;
         for (int i=0; i<2000; i++){
@@ -68,13 +80,70 @@ public class Main {
         }
         executorService.shutdown();
 
-        //Synchro
+        //Synchro1
         PointLock pointLock = new PointLock();
         executorService = Executors.newFixedThreadPool(2000);
         future = null;
         for (int i=0; i<2000; i++){
             future = executorService.submit(() -> {
                 pointLock.moveS(1,1);
+                return null;
+            });
+        }
+
+        try {
+            future.get();
+            pointLock.showCoordinates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+
+        //Synchro2
+        PointLock1 pointLock1 = new PointLock1();
+        executorService = Executors.newFixedThreadPool(2000);
+        future = null;
+        for (int i=0; i<2000; i++){
+            future = executorService.submit(() -> {
+                pointLock1.moveS(1,1);
+                return null;
+            });
+        }
+
+        try {
+            future.get();
+            pointLock.showCoordinates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+
+        //Synchro3
+        PointLock2 pointLock2 = new PointLock2();
+        executorService = Executors.newFixedThreadPool(2000);
+        future = null;
+        for (int i=0; i<2000; i++){
+            future = executorService.submit(() -> {
+                pointLock2.moveS(pointLock2,1,1);
+                return null;
+            });
+        }
+
+        try {
+            future.get();
+            pointLock.showCoordinates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        executorService.shutdown();
+
+        //Synchro4
+        PointLock3 pointLock3 = new PointLock3();
+        executorService = Executors.newFixedThreadPool(2000);
+        future = null;
+        for (int i=0; i<2000; i++){
+            future = executorService.submit(() -> {
+                pointLock3.moveS(pointLock3,1,1);
                 return null;
             });
         }
