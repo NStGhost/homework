@@ -1,5 +1,10 @@
 package com.shadow.homework18;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -9,51 +14,64 @@ public class Main {
 
     private void run() {
         firstEx();
-        secondEx();
-        thirdEx();
-        fourthEx();
+        //secondEx();
+        //thirdEx();
+        //fourthEx();
 
     }
 
     private void fourthEx() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         CopyFiles copyFiles = new CopyFiles();
+        executorService.submit(copyFiles);
         try {
-            Thread.sleep(10000);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        copyFiles.setCancel();
+        executorService.shutdownNow();
     }
 
     private void thirdEx() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         StopWatch stopWatch = new StopWatch();
+        executorService.submit(stopWatch);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(5500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        stopWatch.setCancel();
+        executorService.shutdownNow();
     }
 
     private void secondEx() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         Fibanachi fibanachi = new Fibanachi();
+        final Future<Long> future= executorService.submit(fibanachi);
+        long res1 = 0;
         try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
+            Thread.sleep(2000);
+            executorService.shutdownNow();
+            res1 = future.get();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        long res1 = fibanachi.cancel();
         System.out.println("Result fibanachi - " + res1);
     }
 
     private void firstEx() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
         Factorial factorial = new Factorial(10);
+        final Future<Long> future= executorService.submit(factorial);
+        long res1 = 0;
         try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
+            Thread.sleep(5000);
+            executorService.shutdownNow();
+            res1 = future.get();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        long res1 = factorial.cancel();
         System.out.println("Result factorial - " + res1);
     }
 }

@@ -1,45 +1,26 @@
 package com.shadow.homework18;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
-public class Fibanachi {
+public class Fibanachi implements Callable<Long> {
 
-    private ExecutorService executorService;
-    private Future<Long> future;
-    private long result = 0;
-
-    private boolean setCancel = false;
-
-    public Fibanachi() {
-        executorService = Executors.newFixedThreadPool(4);
-        future = executorService.submit(() -> {
-            System.out.println("Start fibanachi");
-            long temp1 = 0;
-            long temp2 = 1;
-            result = 0;
-            while (!setCancel) {
-                result = temp1 + temp2;
-                temp1 = temp2;
-                temp2 = result;
+    @Override
+    public Long call() throws Exception {
+        System.out.println("Start fibanachi");
+        long temp1 = 0;
+        long temp2 = 1;
+        long result = 0;
+        while (!Thread.currentThread().isInterrupted()) {
+            result = temp1 + temp2;
+            temp1 = temp2;
+            temp2 = result;
+            try {
                 Thread.sleep(250);
+            } catch (Exception e) {
+                break;
             }
-            System.out.println("Stop fibanachi");
-            return result;
-        });
-
-    }
-
-    public long cancel() {
-        setCancel = true;
-        try {
-            result = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
-        executorService.shutdown();
+        System.out.println("Stop fibanachi");
         return result;
     }
 }

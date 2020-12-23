@@ -120,6 +120,8 @@ public class Test extends JFrame {
                         resultSet.getString("firstName"),
                         resultSet.getInt("year")));
             }
+            statement.close();
+            resultSet.close();
             return studentTemp;
         } catch (Exception e) {
             e.printStackTrace();
