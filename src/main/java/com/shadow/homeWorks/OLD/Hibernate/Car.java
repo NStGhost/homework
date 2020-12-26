@@ -1,4 +1,4 @@
-package com.shadow.Hibernate;
+package com.shadow.homeWorks.OLD.Hibernate;
 
 import javax.persistence.*;
 

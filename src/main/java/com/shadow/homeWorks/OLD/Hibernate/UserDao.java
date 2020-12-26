@@ -1,18 +1,24 @@
-package com.shadow.Hibernate;
+package com.shadow.homeWorks.OLD.Hibernate;
 
 import com.shadow.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import java.util.List;
 
 public class UserDao {
+    private final SessionFactory sessionFactory;
+
+    public UserDao(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public User findById(int id) {
-        return HibernateUtil.getSessionFactory().openSession().get(User.class, id);
+        return sessionFactory.openSession().get(User.class, id);
     }
 
     public void save(User user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(user);
         tx1.commit();
@@ -20,7 +26,7 @@ public class UserDao {
     }
 
     public void update(User user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.update(user);
         tx1.commit();
@@ -28,7 +34,7 @@ public class UserDao {
     }
 
     public void delete(User user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.delete(user);
         tx1.commit();
@@ -36,11 +42,11 @@ public class UserDao {
     }
 
     public Car findAutoById(int id) {
-        return HibernateUtil.getSessionFactory().openSession().get(Car.class, id);
+        return sessionFactory.openSession().get(Car.class, id);
     }
 
     public List<User> findAll() {
-        List<User> users = (List<User>)  HibernateUtil.getSessionFactory().openSession().createQuery("From User").list();
+        List<User> users = (List<User>)  sessionFactory.openSession().createQuery("From User").list();
         return users;
     }
 }

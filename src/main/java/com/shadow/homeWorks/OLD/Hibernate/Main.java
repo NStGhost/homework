@@ -1,11 +1,13 @@
-package com.shadow.Hibernate;
+package com.shadow.homeWorks.OLD.Hibernate;
 
 import com.shadow.util.HibernateUtil;
 
 public class Main {
 
     public static void main(String[] args) {
-        UserService userService = new UserService();
+        HibernateUtil hibernateUtil = new HibernateUtil();
+
+        UserService userService = new UserService(hibernateUtil.getSessionFactory());
         User user = new User("Masha",26);
         userService.saveUser(user);
         Car ferrari = new Car("Ferrari", "red");
@@ -15,6 +17,6 @@ public class Main {
         ford.setUser(user);
         user.addAuto(ford);
         userService.updateUser(user);
-        HibernateUtil.getSessionFactory().close();
+        //HibernateUtil.getSessionFactory().close();
     }
 }

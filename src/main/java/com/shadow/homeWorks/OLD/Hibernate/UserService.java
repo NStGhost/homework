@@ -1,12 +1,17 @@
-package com.shadow.Hibernate;
+package com.shadow.homeWorks.OLD.Hibernate;
+
+import org.hibernate.SessionFactory;
 
 import java.util.List;
 
 public class UserService {
 
-    private UserDao usersDao = new UserDao();
+    private final UserDao usersDao;
+    private final SessionFactory sessionFactory;
 
-    public UserService() {
+    public UserService(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        usersDao = new UserDao(this.sessionFactory);
     }
 
     public User findUser(int id) {
