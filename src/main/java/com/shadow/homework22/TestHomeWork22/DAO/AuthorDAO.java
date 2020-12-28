@@ -1,11 +1,13 @@
-package com.shadow.TestHomeWork22;
+package com.shadow.homework22.TestHomeWork22.DAO;
 
+import com.shadow.homework22.TestHomeWork22.Entity.Author;
+import com.shadow.homework22.TestHomeWork22.Interface.IAuthorDAO;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import java.util.List;
 
-public class AuthorDAO {
+public class AuthorDAO implements IAuthorDAO {
 
     private final SessionFactory sessionFactory;
 
@@ -13,10 +15,12 @@ public class AuthorDAO {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public Author findById(int id) {
         return sessionFactory.openSession().get(Author.class, id);
     }
 
+    @Override
     public void save(Author author) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
@@ -25,6 +29,7 @@ public class AuthorDAO {
         session.close();
     }
 
+    @Override
     public void update(Author author) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
@@ -33,6 +38,7 @@ public class AuthorDAO {
         session.close();
     }
 
+    @Override
     public void delete(Author author) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
@@ -41,12 +47,10 @@ public class AuthorDAO {
         session.close();
     }
 
-    public Book findBookById(int id) {
-        return sessionFactory.openSession().get(Book.class, id);
-    }
 
+    @Override
     public List<Author> findAll() {
-        List<Author> users = (List<Author>)  sessionFactory.openSession().createQuery("From Author").list();
-        return users;
+        List<Author> authors = (List<Author>)  sessionFactory.openSession().createQuery("From Author").list();
+        return authors;
     }
 }

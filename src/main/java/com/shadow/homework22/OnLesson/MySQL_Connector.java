@@ -1,4 +1,4 @@
-package com.shadow.homework22;
+package com.shadow.homework22.OnLesson;
 
 import java.sql.*;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.shadow.homework22;
+package com.shadow.homework22.OnLesson;
 
 import java.util.logging.Logger;
 
@@ -39,6 +39,6 @@ public class Test2 {
     }*/
 
     public static void main(String[] args) {
-        new com.shadow.homework22.Test2();
+        new Test2();
     }
 }

@@ -1,4 +1,4 @@
-package com.shadow.TestHomeWork22;
+package com.shadow.homework22.TestHomeWork22.Entity;
 
 import javax.persistence.*;
 
@@ -17,7 +17,7 @@ public class Book {
     private int year;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "autor_id")
+    @JoinColumn(name = "author_id")
     private Author author;
 
     public Book() {}

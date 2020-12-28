@@ -1,4 +1,4 @@
-package com.shadow.TestHomeWork22;
+package com.shadow.homework22.TestHomeWork22.Entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;

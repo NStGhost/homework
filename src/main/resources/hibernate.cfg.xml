@@ -9,5 +9,8 @@
         <property name="show_sql">false</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+        <mapping class="com.shadow.homework22.TestHomeWork22.Entity.Author"/>
+        <mapping class="com.shadow.homework22.TestHomeWork22.Entity.Book"/>
     </session-factory>
 </hibernate-configuration>
