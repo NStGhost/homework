@@ -7,10 +7,11 @@ import com.shadow.homework22.TestHomeWork22.Service.BookService;
 import com.shadow.homework22.TestHomeWork22.Util.HibernateUtil;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Main {
+public class Hibernate {
     public static void main(String[] args) {
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+        Logger.getLogger("org.hibernate").setLevel(Level.OFF);
         final HibernateUtil hibernateUtil = new HibernateUtil();
 
         AuthorService authorService = new AuthorService(hibernateUtil.getSessionFactory());
