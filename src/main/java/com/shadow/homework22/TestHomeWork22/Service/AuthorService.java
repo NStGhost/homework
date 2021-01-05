@@ -1,6 +1,7 @@
 package com.shadow.homework22.TestHomeWork22.Service;
 
 import com.shadow.homework22.TestHomeWork22.DAO.AuthorDAO;
+import com.shadow.homework22.TestHomeWork22.Entity.Author;
 import com.shadow.homework22.TestHomeWork22.Entity.Book;
 import com.shadow.homework22.TestHomeWork22.Interface.IAuthorService;
 import org.hibernate.SessionFactory;
@@ -18,27 +19,32 @@ public class AuthorService implements IAuthorService {
     }
 
     @Override
-    public com.shadow.homework22.TestHomeWork22.Entity.Author findAuthor(int id) {
+    public Author findAuthor(Author author) {
+        return autorDAO.find(author);
+    }
+
+    @Override
+    public Author findAuthorById(int id) {
         return autorDAO.findById(id);
     }
 
     @Override
-    public void saveAuthor(com.shadow.homework22.TestHomeWork22.Entity.Author author) {
+    public void saveAuthor(Author author) {
         autorDAO.save(author);
     }
 
     @Override
-    public void deleteAuthor(com.shadow.homework22.TestHomeWork22.Entity.Author author) {
+    public void deleteAuthor(Author author) {
         autorDAO.delete(author);
     }
 
     @Override
-    public void updateAuthor(com.shadow.homework22.TestHomeWork22.Entity.Author author) {
+    public void updateAuthor(Author author) {
         autorDAO.update(author);
     }
 
     @Override
-    public List<com.shadow.homework22.TestHomeWork22.Entity.Author> findAllAuthor() {
+    public List<Author> findAllAuthor() {
         return autorDAO.findAll();
     }
 

@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IAuthorService {
 
-    public Author findAuthor(int id);
+    public Author findAuthorById(int id);
+
+    public Author findAuthor(Author author);
 
     public void saveAuthor(Author author);
 

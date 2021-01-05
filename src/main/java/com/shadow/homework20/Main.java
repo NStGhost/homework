@@ -13,14 +13,14 @@ public class Main {
     }
 
     private void run() {
-        First();
-        FirstA();
-        FirstB();
+        //First();
+        //FirstA();
+        //FirstB();
         //Second();
         //Third();
         //ThirdA();
         //Fourth();
-        //Fifth();
+        Fifth();
     }
 
     private void Fifth() {
@@ -50,7 +50,7 @@ public class Main {
             countDownLatch.countDown();
 
         };
-        ScheduledFuture<?> future = executorService.scheduleAtFixedRate(runnable, 5,5, TimeUnit.SECONDS);
+        ScheduledFuture<?> future = executorService.scheduleAtFixedRate(runnable, 0,5, TimeUnit.SECONDS);
         executorService.schedule(new Runnable() {
             @Override
             public void run() {

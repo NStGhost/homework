@@ -21,6 +21,11 @@ public class AuthorDAO implements IAuthorDAO {
     }
 
     @Override
+    public Author find(Author author) {
+        return null;//sessionFactory.openSession().get(Author.class);
+    }
+
+    @Override
     public void save(Author author) {
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();

@@ -11,6 +11,8 @@ public interface IAuthorDAO {
 
     public Author findById(int id);
 
+    public Author find(Author author);
+
     public void save(Author author);
 
     public void update(Author author);
