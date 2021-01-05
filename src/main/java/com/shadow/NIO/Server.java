@@ -11,7 +11,6 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -76,7 +75,6 @@ public class Server {
     private ByteBuffer objectToByteBuffer(Object obj) {
         return ByteBuffer.wrap(new Gson().toJson(obj, obj.getClass()).getBytes(charset));
     }
-
 
     private String readMessage(SocketChannel client, ByteBuffer buffer) throws IOException {
         client.read(buffer);
