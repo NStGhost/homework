@@ -1,7 +1,7 @@
 package com.shadow.NIO;
 
 public enum TypeMessages {
-    OK,
+    MESSAGE,
     ERROR,
     AUTHORIZATION,
     KEY

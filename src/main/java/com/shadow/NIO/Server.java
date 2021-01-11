@@ -52,15 +52,18 @@ public class Server {
     }
 
     private void isRead(SelectionKey key){
+        ServerHandler serverHandler = new ServerHandler();
         SocketChannel client = (SocketChannel) key.channel();
         try {
             ByteBuffer buffer = ByteBuffer.allocate(sizeBuffer);
-            String message = readMessage(client, buffer);
+
+            String message = serverHandler.readMessage(client, buffer);
+
             System.out.println(message);
             TempClass temp = new Gson().fromJson(message, TempClass.class);
             System.out.println(temp.getId() + " " + temp.getName());
             buffer = objectToByteBuffer(temp);
-            sendMessage(client, buffer);
+            serverHandler.sendMessage(client, buffer);
             client.close();
         } catch (IOException | NullPointerException e) {
             System.out.println("isRead: " + e.getMessage());
@@ -74,17 +77,6 @@ public class Server {
 
     private ByteBuffer objectToByteBuffer(Object obj) {
         return ByteBuffer.wrap(new Gson().toJson(obj, obj.getClass()).getBytes(charset));
-    }
-
-    private String readMessage(SocketChannel client, ByteBuffer buffer) throws IOException {
-        client.read(buffer);
-        return new String(buffer.array()).trim();
-    }
-
-    private void sendMessage(SocketChannel client, ByteBuffer buffer) throws IOException {
-        buffer.flip();
-        client.write(buffer);
-        buffer.clear();
     }
 
     private void register(Selector selector, ServerSocketChannel serverSocket) throws IOException {
