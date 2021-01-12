@@ -67,15 +67,17 @@ public class AuthorDAO {
 
     public int insertAuthor(Author author) {
         final String temp = "INSERT INTO authors(name, birth_year) VALUES(?,?)";
-        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+        try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, author.name);
             statement.setInt(2, author.birth_year);
-            ResultSet resultSet = statement.executeQuery();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {
                 throw new RuntimeException("Failed insert author");
             }
             return resultSet.getInt(1);
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
             throw new RuntimeException("Failed insert author");
         }
     }

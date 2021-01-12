@@ -67,10 +67,11 @@ public class UserDAO {
 
     public int insertUser(User user) {
         final String temp = "INSERT INTO users(name, year) VALUES(?,?)";
-        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+        try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.name);
             statement.setInt(2, user.year);
-            ResultSet resultSet = statement.executeQuery();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {
                 throw new RuntimeException("Failed insert user");
             }

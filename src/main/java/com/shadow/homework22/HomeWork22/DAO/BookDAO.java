@@ -57,6 +57,25 @@ public class BookDAO {
         }
     }
 
+    public Optional<Book> getBookByNameAndAuthor(String bookTitle, String authorName) {
+        final String temp = "SELECT books.* FROM books" +
+                        " JOIN authors ON authors.id = books.author_id" +
+                        " WHERE books.title = ? and authors.name = ?" +
+                        " LIMIT 1";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setString(1, bookTitle);
+            statement.setString(2, authorName);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(createBookFromResultSet(resultSet));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get book from id");
+        }
+    }
+
+
     private Book createBookFromResultSet(ResultSet resultSet) throws SQLException {
         final Book book = new Book();
         book.id = resultSet.getInt("id");
@@ -68,11 +87,12 @@ public class BookDAO {
 
     public int insertBook(Book book) {
         final String temp = "INSERT INTO books(author_id, title, year_published) VALUES(?,?,?)";
-        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+        try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, book.author_id);
             statement.setString(2, book.title);
             statement.setInt(3, book.year_published);
-            ResultSet resultSet = statement.executeQuery();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {
                 throw new RuntimeException("Failed insert book");
             }

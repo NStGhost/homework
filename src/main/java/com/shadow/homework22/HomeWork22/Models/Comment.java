@@ -12,7 +12,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(int id, int user_id, int books_id, String text, String date) {
+    public Comment(int user_id, int books_id, String text, String date) {
         this.id = id;
         this.user_id = user_id;
         this.books_id = books_id;

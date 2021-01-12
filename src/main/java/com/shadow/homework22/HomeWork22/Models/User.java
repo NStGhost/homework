@@ -9,7 +9,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, int year) {
+    public User(String name, int year) {
         this.id = id;
         this.name = name;
         this.year = year;

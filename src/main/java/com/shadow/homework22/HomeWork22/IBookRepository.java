@@ -20,7 +20,7 @@ public interface IBookRepository {
     Optional<User> getUserById(int id);
     Optional<Comment> getCommentById(int id);
 
-    //void save(Book book, Author author);
+    void save(Book book, Author author);
 
     void save(Author author);
     void save(Book book);

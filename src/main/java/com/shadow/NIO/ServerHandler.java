@@ -22,11 +22,4 @@ public class ServerHandler implements IServerHandler{
         buffer.clear();
     }
 
-    @Override
-    public void register(Selector selector, ServerSocketChannel serverSocket) throws IOException {
-        SocketChannel client = serverSocket.accept();
-        client.configureBlocking(false);
-        System.out.println(client.getRemoteAddress());
-        client.register(selector, SelectionKey.OP_READ);
-    }
 }

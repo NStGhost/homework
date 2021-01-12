@@ -83,6 +83,22 @@ public class JDBCHandler implements IBookRepository{
     }
 
     @Override
+    public void save(Book book, Author author) {
+        if (author.id == INVALID_ID) {
+            author.id = authorDAO.insertAuthor(author);
+        } else {
+            authorDAO.updateAuthor(author);
+        }
+
+        book.author_id = author.id;
+
+        if (book.id == INVALID_ID) {
+
+        }
+
+    }
+
+    @Override
     public void save(Author author) {
         if (author.id == INVALID_ID) {
             authorDAO.insertAuthor(author);

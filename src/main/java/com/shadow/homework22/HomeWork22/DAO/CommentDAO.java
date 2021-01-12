@@ -70,12 +70,13 @@ public class CommentDAO {
 
     public int insertComment(Comment comment) {
         final String temp = "INSERT INTO comments(book_id, user_id, text, date) VALUES(?,?,?,?)";
-        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+        try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, comment.books_id);
             statement.setInt(2, comment.user_id);
             statement.setString(2, comment.text);
             statement.setString(2, comment.date);
-            ResultSet resultSet = statement.executeQuery();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {
                 throw new RuntimeException("Failed insert comment");
             }

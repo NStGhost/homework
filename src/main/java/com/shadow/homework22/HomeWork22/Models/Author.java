@@ -9,7 +9,7 @@ public class Author {
     public Author() {
     }
 
-    public Author(int id, String name, int birth_year) {
+    public Author(String name, int birth_year) {
         this.id = id;
         this.name = name;
         this.birth_year = birth_year;
