@@ -6,4 +6,12 @@ public class User {
     public String name;
     public int year;
 
+    public User() {
+    }
+
+    public User(int id, String name, int year) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+    }
 }

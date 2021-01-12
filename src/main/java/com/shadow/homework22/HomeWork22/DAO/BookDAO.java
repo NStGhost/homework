@@ -2,11 +2,11 @@ package com.shadow.homework22.HomeWork22.DAO;
 
 import com.shadow.homework22.HomeWork22.Models.Author;
 import com.shadow.homework22.HomeWork22.Models.Book;
+import com.shadow.homework22.HomeWork22.Models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 public class BookDAO {
@@ -26,6 +26,19 @@ public class BookDAO {
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Failed delete book");
+        }
+    }
+
+    public Collection<Book> getAllBooks() {
+        try (Statement statement = connection.createStatement()) {
+            final Collection<Book> books = new ArrayList<>();
+            ResultSet cursor = statement.executeQuery("SELECT * FROM users");
+            while (cursor.next()) {
+                books.add(createBookFromResultSet(cursor));
+            }
+            return books;
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get all users");
         }
     }
 
@@ -66,6 +79,22 @@ public class BookDAO {
             return resultSet.getInt(1);
         } catch (SQLException throwables) {
             throw new RuntimeException("Failed insert book");
+        }
+    }
+
+    public void updateBook(Book book) {
+        final String temp = "UPDATE books SET author_id = ?, title = ?, year_published = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setInt(1, book.author_id);
+            statement.setString(2, book.title);
+            statement.setInt(3, book.year_published);
+            statement.setInt(4, book.id);
+            int r = statement.executeUpdate();
+            if (r != 1){
+                throw new IllegalArgumentException("Error update book " + r);
+            }
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Error update book");
         }
     }
 }

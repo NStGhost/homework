@@ -1,11 +1,12 @@
 package com.shadow.homework22.HomeWork22.DAO;
 
+import com.shadow.homework22.HomeWork22.Models.Author;
 import com.shadow.homework22.HomeWork22.Models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.plaf.nimbus.State;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 public class UserDAO {
@@ -26,6 +27,19 @@ public class UserDAO {
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Failed delete user");
+        }
+    }
+
+    public Collection<User> getAllUsers() {
+        try (Statement statement = connection.createStatement()) {
+            final Collection<User> users = new ArrayList<>();
+            ResultSet cursor = statement.executeQuery("SELECT * FROM users");
+            while (cursor.next()) {
+                users.add(createUserFromResultSet(cursor));
+            }
+            return users;
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get all users");
         }
     }
 
@@ -63,6 +77,21 @@ public class UserDAO {
             return resultSet.getInt(1);
         } catch (SQLException throwables) {
             throw new RuntimeException("Failed insert user");
+        }
+    }
+
+    public void updateUser(User user) {
+        final String temp = "UPDATE users SET name = ?, year = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setString(1, user.name);
+            statement.setInt(2, user.year);
+            statement.setInt(3, user.id);
+            int r = statement.executeUpdate();
+            if (r != 1){
+                throw new IllegalArgumentException("Error update user " + r);
+            }
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Error update user");
         }
     }
 

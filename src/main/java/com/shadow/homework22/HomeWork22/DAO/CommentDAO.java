@@ -1,11 +1,12 @@
 package com.shadow.homework22.HomeWork22.DAO;
 
+import com.shadow.homework22.HomeWork22.Models.Book;
 import com.shadow.homework22.HomeWork22.Models.Comment;
+import com.shadow.homework22.HomeWork22.Models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 public class CommentDAO {
@@ -26,6 +27,19 @@ public class CommentDAO {
             }
         } catch (SQLException throwables) {
             throw new RuntimeException("Failed delete comment");
+        }
+    }
+
+    public Collection<Comment> getAllComments() {
+        try (Statement statement = connection.createStatement()) {
+            final Collection<Comment> comments = new ArrayList<>();
+            ResultSet cursor = statement.executeQuery("SELECT * FROM comments");
+            while (cursor.next()) {
+                comments.add(createCommentFromResultSet(cursor));
+            }
+            return comments;
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get all users");
         }
     }
 
@@ -70,4 +84,22 @@ public class CommentDAO {
             throw new RuntimeException("Failed insert comment");
         }
     }
+
+    public void updateComment(Comment comment) {
+        final String temp = "UPDATE comments SET book_id = ?, user_id = ?, text = ?, date = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setInt(1, comment.books_id);
+            statement.setInt(2, comment.user_id);
+            statement.setString(3, comment.text);
+            statement.setString(4, comment.date);
+            statement.setInt(5, comment.id);
+            int r = statement.executeUpdate();
+            if (r != 1){
+                throw new IllegalArgumentException("Error update comment " + r);
+            }
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Error update comment");
+        }
+    }
+
 }
