@@ -6,6 +6,7 @@ import com.shadow.homework22.HomeWork22.Models.Book;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class Main {
 
@@ -30,9 +31,28 @@ public class Main {
     private void hadlerConnection(Connection connection) {
         JDBCHandler jdbcHandler = new JDBCHandler(connection);
 
+        Optional<Book> book = jdbcHandler.getBookById(2);
+        if (book.isPresent()) {
+            Optional<Author> author = jdbcHandler.getAuthorById(book.get().author_id);
+            author.ifPresent(author1 ->
+                    book.ifPresent(
+                            value ->
+                                    System.out.printf("%d %s %s %d%n", value.id, value.title, author1.name, value.year_published)
+                    ));
+        }
 
 
-        /*Book book = new Book(17,"Green mile",1966);
+        /*
+        createAuthor(jdbcHandler);
+        createBooks(jdbcHandler);
+        */
+
+
+
+    }
+
+    private void createBooks(JDBCHandler jdbcHandler) {
+        Book book = new Book(17,"Green mile",1966);
         Book book1 = new Book(17,"Shine",1970);
         Book book2 = new Book(17,"ONO",1973);
 
@@ -48,17 +68,17 @@ public class Main {
         jdbcHandler.save(book3);
         jdbcHandler.save(book4);
         jdbcHandler.save(book5);
-        jdbcHandler.save(book6);*/
-        /*Author author = new Author("Stiven King",1925);
+        jdbcHandler.save(book6);
+    }
+
+    private void createAuthor(JDBCHandler jdbcHandler) {
+        Author author = new Author("Stiven King",1925);
         Author author1 = new Author("Pushkin",1933);
         Author author2 = new Author("Agata Kristi",1890);
 
         jdbcHandler.save(author);
         jdbcHandler.save(author1);
-        jdbcHandler.save(author2);*/
-
-
-
+        jdbcHandler.save(author2);
     }
 
 }
