@@ -83,25 +83,43 @@ public class JDBCHandler implements IBookRepository{
     }
 
     @Override
+    public Optional<Book> getBookByNameAndAuthor(String titleBook, String authorName) {
+        return bookDAO.getBookByNameAndAuthor(titleBook, authorName);
+    }
+
+    @Override
     public void save(Book book, Author author) {
         if (author.id == INVALID_ID) {
-            author.id = authorDAO.insertAuthor(author);
+            Optional<Author> tempAuthor = authorDAO.getAuthorByParams(author);
+            if (tempAuthor.isPresent()) {
+                author.id = tempAuthor.get().id;
+            } else {
+                author.id = authorDAO.insertAuthor(author);
+            }
         } else {
             authorDAO.updateAuthor(author);
         }
-
         book.author_id = author.id;
-
         if (book.id == INVALID_ID) {
-
+            Optional<Book> matchingBook = bookDAO.getBookByNameAndAuthor(book.title, author.name);
+            if (matchingBook.isPresent()) {
+                book.id = matchingBook.get().id;
+                bookDAO.updateBook(book);
+            } else {
+                bookDAO.insertBook(book);
+            }
         }
-
     }
 
     @Override
     public void save(Author author) {
         if (author.id == INVALID_ID) {
-            authorDAO.insertAuthor(author);
+            Optional<Author> tempAuthor = authorDAO.getAuthorByParams(author);
+            if (!tempAuthor.isPresent()) {
+                authorDAO.insertAuthor(author);
+            } else {
+                System.out.println("Author is exits");
+            }
         } else {
             authorDAO.updateAuthor(author);
         }
@@ -110,7 +128,13 @@ public class JDBCHandler implements IBookRepository{
     @Override
     public void save(Book book) {
         if (book.id == INVALID_ID) {
-            bookDAO.insertBook(book);
+            Optional<Book> matchingBook = bookDAO.getBookByNameAndAuthorID(book.title, book.author_id);
+            if (matchingBook.isPresent()) {
+                book.id = matchingBook.get().id;
+                bookDAO.updateBook(book);
+            } else {
+                bookDAO.insertBook(book);
+            }
         } else {
             bookDAO.updateBook(book);
         }
@@ -119,7 +143,12 @@ public class JDBCHandler implements IBookRepository{
     @Override
     public void save(User user) {
         if (user.id == INVALID_ID) {
-            userDAO.insertUser(user);
+            Optional<User> tempUser = userDAO.getUserByEmail(user.email);
+            if (!tempUser.isPresent()) {
+                userDAO.insertUser(user);
+            } else {
+                System.out.println("User is exits");
+            }
         } else {
             userDAO.updateUser(user);
         }
@@ -128,7 +157,13 @@ public class JDBCHandler implements IBookRepository{
     @Override
     public void save(Comment comment) {
         if (comment.id == INVALID_ID) {
-            commentDAO.insertComment(comment);
+            Optional<Comment> tempComment = commentDAO.getCommentByParams(comment);
+            if (!tempComment.isPresent()) {
+                commentDAO.insertComment(comment);
+            } else {
+                System.out.println("Comment is exits");
+            }
+
         } else {
             commentDAO.updateComment(comment);
         }

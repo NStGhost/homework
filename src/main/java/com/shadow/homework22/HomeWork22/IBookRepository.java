@@ -20,6 +20,9 @@ public interface IBookRepository {
     Optional<User> getUserById(int id);
     Optional<Comment> getCommentById(int id);
 
+    Optional<Book> getBookByNameAndAuthor(String titleBook, String authorName);
+    //Optional<User> getUserByEmail(String email);
+
     void save(Book book, Author author);
 
     void save(Author author);

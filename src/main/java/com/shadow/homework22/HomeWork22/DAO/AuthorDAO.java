@@ -57,6 +57,21 @@ public class AuthorDAO {
         }
     }
 
+    public Optional<Author> getAuthorByParams(Author author) {
+        final String temp = "SELECT * FROM authors WHERE name = ? AND birth_year = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setString(1, author.name);
+            statement.setInt(2, author.birth_year);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(createAuthorFromResultSet(resultSet));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get author from id");
+        }
+    }
+
     private Author createAuthorFromResultSet(ResultSet resultSet) throws SQLException {
         final Author author = new Author();
         author.id = resultSet.getInt("id");

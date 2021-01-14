@@ -75,6 +75,24 @@ public class BookDAO {
         }
     }
 
+    public Optional<Book> getBookByNameAndAuthorID(String bookTitle, int authorId) {
+        final String temp = "SELECT books.* FROM books" +
+                " JOIN authors ON authors.id = books.author_id" +
+                " WHERE books.title = ? and authors.id = ?" +
+                " LIMIT 1";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setString(1, bookTitle);
+            statement.setInt(2, authorId);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(createBookFromResultSet(resultSet));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get book from id");
+        }
+    }
+
 
     private Book createBookFromResultSet(ResultSet resultSet) throws SQLException {
         final Book book = new Book();

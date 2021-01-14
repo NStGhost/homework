@@ -57,19 +57,35 @@ public class UserDAO {
         }
     }
 
+    public Optional<User> getUserByEmail(String email) {
+        final String temp = "SELECT * FROM users WHERE email = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(createUserFromResultSet(resultSet));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get user from id");
+        }
+    }
+
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {
         final User user = new User();
         user.id = resultSet.getInt("id");
         user.name = resultSet.getString("name");
         user.year = resultSet.getInt("year");
+        user.email = resultSet.getString("email");
         return user;
     }
 
     public int insertUser(User user) {
-        final String temp = "INSERT INTO users(name, year) VALUES(?,?)";
+        final String temp = "INSERT INTO users(name, year, email) VALUES(?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.name);
             statement.setInt(2, user.year);
+            statement.setString(3, user.email);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {

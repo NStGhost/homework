@@ -57,24 +57,42 @@ public class CommentDAO {
         }
     }
 
+
+    public Optional<Comment> getCommentByParams(Comment comment) {
+        final String temp = "SELECT * FROM comments WHERE user_id = ? and book_id = ? and text = ? and date = ?";
+        try (PreparedStatement statement = connection.prepareStatement(temp)) {
+            statement.setInt(1, comment.user_id);
+            statement.setInt(2, comment.book_id);
+            statement.setString(3, comment.text);
+            statement.setString(4, comment.date);
+            ResultSet resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(createCommentFromResultSet(resultSet));
+        } catch (SQLException throwables) {
+            throw new RuntimeException("Failed get comment from id");
+        }
+    }
+
+
     private Comment createCommentFromResultSet(ResultSet resultSet) throws SQLException {
         final Comment comment = new Comment();
         comment.id = resultSet.getInt("id");
-        comment.books_id = resultSet.getInt("book_id");
+        comment.book_id = resultSet.getInt("book_id");
         comment.user_id = resultSet.getInt("user_id");
         comment.text = resultSet.getString("text");
         comment.date = resultSet.getString("date");
-
         return comment;
     }
 
     public int insertComment(Comment comment) {
-        final String temp = "INSERT INTO comments(book_id, user_id, text, date) VALUES(?,?,?,?)";
+        final String temp = "INSERT INTO comments(user_id, book_id, text, date) VALUES(?,?,?,?)";
         try (PreparedStatement statement = connection.prepareStatement(temp, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, comment.books_id);
-            statement.setInt(2, comment.user_id);
-            statement.setString(2, comment.text);
-            statement.setString(2, comment.date);
+            statement.setInt(1, comment.user_id);
+            statement.setInt(2, comment.book_id);
+            statement.setString(3, comment.text);
+            statement.setString(4, comment.date);
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (!resultSet.next()) {
@@ -82,6 +100,7 @@ public class CommentDAO {
             }
             return resultSet.getInt(1);
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
             throw new RuntimeException("Failed insert comment");
         }
     }
@@ -89,7 +108,7 @@ public class CommentDAO {
     public void updateComment(Comment comment) {
         final String temp = "UPDATE comments SET book_id = ?, user_id = ?, text = ?, date = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(temp)) {
-            statement.setInt(1, comment.books_id);
+            statement.setInt(1, comment.book_id);
             statement.setInt(2, comment.user_id);
             statement.setString(3, comment.text);
             statement.setString(4, comment.date);
